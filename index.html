@@ -7,7 +7,7 @@
     <meta name="description" content="Professional PDF Generator with rich text editing, templates, themes, and more">
     <meta name="author" content="Sudhir Singh">
     <meta name="theme-color" content="#ce93d8">
-    <link rel="manifest" href="./manifest.json">
+    <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a2e' width='100' height='100' rx='20'/><rect fill='%23ce93d8' x='15' y='20' width='70' height='60' rx='8'/><text x='50' y='60' font-size='30' font-weight='bold' text-anchor='middle' fill='%231a1a2e'>PDF</text></svg>">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231a1a2e' width='180' height='180' rx='40'/><rect fill='%23ce93d8' x='30' y='36' width='120' height='108' rx='12'/><text x='90' y='108' font-size='50' font-weight='bold' text-anchor='middle' fill='%231a1a2e'>PDF</text></svg>">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -2193,13 +2193,15 @@ function example() {
 
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js', { scope: './' })
-                .then((registration) => {
-                    console.log('SW registered:', registration.scope);
-                })
-                .catch((error) => {
-                    console.log('SW registration failed:', error);
-                });
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then((registration) => {
+                        console.log('SW registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('SW registration failed:', error);
+                    });
+            });
         }
 
         // Check if app is installed
