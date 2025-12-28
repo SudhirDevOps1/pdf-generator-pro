@@ -2,8 +2,8 @@
     "name": "SudhirDevOps1 PDF Generator Pro",
     "short_name": "PDF Generator",
     "description": "Professional PDF Generator with rich text editing, templates, themes, and more",
-    "start_url": "./",
-    "scope": "./",
+    "start_url": ".",
+    "scope": ".",
     "display": "standalone",
     "background_color": "#1a1a2e",
     "theme_color": "#ce93d8",
@@ -11,21 +11,22 @@
     "categories": ["productivity", "utilities", "business"],
     "lang": "en",
     "dir": "ltr",
+    "id": "pdf-generator-pro",
     "icons": [
         {
-            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%231a1a2e' width='512' height='512' rx='100'/><rect fill='%23ce93d8' x='80' y='100' width='352' height='312' rx='20'/><text x='256' y='300' font-size='180' font-weight='bold' text-anchor='middle' fill='%231a1a2e'>PDF</text></svg>",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%231a1a2e' width='512' height='512' rx='100'/%3E%3Crect fill='%23ce93d8' x='80' y='100' width='352' height='312' rx='20'/%3E%3Ctext x='256' y='300' font-size='180' font-weight='bold' text-anchor='middle' fill='%231a1a2e'%3EPDF%3C/text%3E%3C/svg%3E",
             "sizes": "512x512",
             "type": "image/svg+xml",
             "purpose": "any"
         },
         {
-            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%231a1a2e' width='192' height='192' rx='40'/><rect fill='%23ce93d8' x='30' y='38' width='132' height='116' rx='10'/><text x='96' y='115' font-size='60' font-weight='bold' text-anchor='middle' fill='%231a1a2e'>PDF</text></svg>",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%231a1a2e' width='192' height='192' rx='40'/%3E%3Crect fill='%23ce93d8' x='30' y='38' width='132' height='116' rx='10'/%3E%3Ctext x='96' y='115' font-size='60' font-weight='bold' text-anchor='middle' fill='%231a1a2e'%3EPDF%3C/text%3E%3C/svg%3E",
             "sizes": "192x192",
             "type": "image/svg+xml",
             "purpose": "any"
         },
         {
-            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%23ce93d8' width='512' height='512' rx='100'/><text x='256' y='320' font-size='200' font-weight='bold' text-anchor='middle' fill='%231a1a2e'>PDF</text></svg>",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%23ce93d8' width='512' height='512' rx='100'/%3E%3Ctext x='256' y='320' font-size='200' font-weight='bold' text-anchor='middle' fill='%231a1a2e'%3EPDF%3C/text%3E%3C/svg%3E",
             "sizes": "512x512",
             "type": "image/svg+xml",
             "purpose": "maskable"
@@ -33,37 +34,20 @@
     ],
     "screenshots": [
         {
-            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'><rect fill='%231a1a2e' width='1280' height='720'/><text x='640' y='360' font-size='60' text-anchor='middle' fill='%23ce93d8'>PDF Generator Pro</text></svg>",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'%3E%3Crect fill='%231a1a2e' width='1280' height='720'/%3E%3Ctext x='640' y='360' font-size='60' text-anchor='middle' fill='%23ce93d8'%3EPDF Generator Pro%3C/text%3E%3C/svg%3E",
             "sizes": "1280x720",
             "type": "image/svg+xml",
             "form_factor": "wide",
             "label": "PDF Generator Pro Desktop View"
         },
         {
-            "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 750 1334'><rect fill='%231a1a2e' width='750' height='1334'/><text x='375' y='667' font-size='50' text-anchor='middle' fill='%23ce93d8'>PDF Generator Pro</text></svg>",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 750 1334'%3E%3Crect fill='%231a1a2e' width='750' height='1334'/%3E%3Ctext x='375' y='667' font-size='50' text-anchor='middle' fill='%23ce93d8'%3EPDF Generator Pro%3C/text%3E%3C/svg%3E",
             "sizes": "750x1334",
             "type": "image/svg+xml",
             "form_factor": "narrow",
             "label": "PDF Generator Pro Mobile View"
         }
     ],
-    "shortcuts": [
-        {
-            "name": "New Document",
-            "short_name": "New",
-            "description": "Start a new document",
-            "url": "./?action=new",
-            "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%2322c55e' width='96' height='96' rx='20'/><text x='48' y='65' font-size='50' text-anchor='middle' fill='white'>+</text></svg>", "sizes": "96x96" }]
-        },
-        {
-            "name": "Export PDF",
-            "short_name": "Export",
-            "description": "Export current document as PDF",
-            "url": "./?action=export",
-            "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect fill='%233b82f6' width='96' height='96' rx='20'/><text x='48' y='65' font-size='40' text-anchor='middle' fill='white'>↓</text></svg>", "sizes": "96x96" }]
-        }
-    ],
-    "related_applications": [],
     "prefer_related_applications": false,
     "handle_links": "preferred",
     "launch_handler": {
