@@ -1,15 +1,14 @@
 // Service Worker for SudhirDevOps1 PDF Generator Pro
-const CACHE_NAME = 'pdf-generator-pro-v3';
-const OFFLINE_URL = './';
+const CACHE_NAME = 'pdf-generator-pro-v4';
 
-// Files to cache for offline use
+// Files to cache
 const STATIC_CACHE = [
-    './',
-    './index.html',
-    './manifest.json'
+    '',
+    'index.html',
+    'manifest.json'
 ];
 
-// External resources to cache
+// External resources
 const EXTERNAL_CACHE = [
     'https://cdn.tailwindcss.com',
     'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
@@ -21,41 +20,27 @@ const EXTERNAL_CACHE = [
     'https://fonts.googleapis.com/css2?family=Fira+Code&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap'
 ];
 
-// Install event - cache static files
+// Install event
 self.addEventListener('install', (event) => {
-    console.log('[SW] Installing Service Worker...');
-
+    console.log('[SW] Installing...');
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log('[SW] Caching static files');
-                // Cache static files first
-                return cache.addAll(STATIC_CACHE)
-                    .then(() => {
-                        // Try to cache external resources (don't fail if some fail)
-                        return Promise.allSettled(
-                            EXTERNAL_CACHE.map(url =>
-                                cache.add(url).catch(err => {
-                                    console.log('[SW] Failed to cache:', url);
-                                })
-                            )
-                        );
-                    });
+                console.log('[SW] Caching files');
+                // Cache external resources (don't fail if some fail)
+                EXTERNAL_CACHE.forEach(url => {
+                    cache.add(url).catch(err => console.log('[SW] Failed to cache:', url));
+                });
+                return cache.addAll(STATIC_CACHE);
             })
-            .then(() => {
-                console.log('[SW] Installation complete');
-                return self.skipWaiting();
-            })
-            .catch((err) => {
-                console.error('[SW] Installation failed:', err);
-            })
+            .then(() => self.skipWaiting())
+            .catch((err) => console.error('[SW] Install failed:', err))
     );
 });
 
-// Activate event - clean old caches
+// Activate event
 self.addEventListener('activate', (event) => {
-    console.log('[SW] Activating Service Worker...');
-
+    console.log('[SW] Activating...');
     event.waitUntil(
         caches.keys()
             .then((cacheNames) => {
@@ -68,137 +53,48 @@ self.addEventListener('activate', (event) => {
                     })
                 );
             })
-            .then(() => {
-                console.log('[SW] Activation complete');
-                return self.clients.claim();
-            })
+            .then(() => self.clients.claim())
     );
 });
 
-// Fetch event - serve from cache, fallback to network
+// Fetch event - Network first, fallback to cache
 self.addEventListener('fetch', (event) => {
-    // Skip non-GET requests
-    if (event.request.method !== 'GET') {
-        return;
-    }
-
-    // Skip chrome-extension and other non-http requests
-    if (!event.request.url.startsWith('http')) {
-        return;
-    }
+    if (event.request.method !== 'GET') return;
+    if (!event.request.url.startsWith('http')) return;
 
     event.respondWith(
-        caches.match(event.request)
-            .then((cachedResponse) => {
-                // Return cached version if available
-                if (cachedResponse) {
-                    // Fetch new version in background
-                    fetchAndCache(event.request);
-                    return cachedResponse;
+        fetch(event.request)
+            .then((response) => {
+                // Clone and cache the response
+                if (response && response.status === 200) {
+                    const responseClone = response.clone();
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
                 }
-
-                // Not in cache, fetch from network
-                return fetch(event.request)
-                    .then((response) => {
-                        // Don't cache if not a valid response
-                        if (!response || response.status !== 200) {
-                            return response;
+                return response;
+            })
+            .catch(() => {
+                // Network failed, try cache
+                return caches.match(event.request)
+                    .then((cachedResponse) => {
+                        if (cachedResponse) {
+                            return cachedResponse;
                         }
-
-                        // Clone the response
-                        const responseToCache = response.clone();
-
-                        // Cache the fetched response
-                        caches.open(CACHE_NAME)
-                            .then((cache) => {
-                                cache.put(event.request, responseToCache);
-                            });
-
-                        return response;
-                    })
-                    .catch((error) => {
-                        console.log('[SW] Fetch failed:', error);
-
-                        // Return offline page for navigation requests
+                        // Return offline page for navigation
                         if (event.request.mode === 'navigate') {
-                            return caches.match(OFFLINE_URL);
+                            return caches.match('index.html');
                         }
-
-                        return new Response('Offline', {
-                            status: 503,
-                            statusText: 'Service Unavailable'
-                        });
+                        return new Response('Offline', { status: 503 });
                     });
             })
     );
 });
 
-// Background fetch and cache update
-function fetchAndCache(request) {
-    fetch(request)
-        .then((response) => {
-            if (response && response.status === 200) {
-                caches.open(CACHE_NAME)
-                    .then((cache) => {
-                        cache.put(request, response);
-                    });
-            }
-        })
-        .catch(() => {
-            // Ignore fetch errors for background updates
-        });
-}
-
-// Handle messages from the main app
+// Handle messages
 self.addEventListener('message', (event) => {
-    if (event.data && event.data.type === 'SKIP_WAITING') {
+    if (event.data === 'skipWaiting') {
         self.skipWaiting();
-    }
-
-    if (event.data && event.data.type === 'CLEAR_CACHE') {
-        caches.delete(CACHE_NAME).then(() => {
-            console.log('[SW] Cache cleared');
-        });
-    }
-});
-
-// Background sync for saving documents
-self.addEventListener('sync', (event) => {
-    if (event.tag === 'save-document') {
-        console.log('[SW] Background sync: save-document');
-    }
-});
-
-// Push notifications (future feature)
-self.addEventListener('push', (event) => {
-    const options = {
-        body: event.data ? event.data.text() : 'New notification from PDF Generator',
-        icon: './icon-192.png',
-        badge: './badge-72.png',
-        vibrate: [100, 50, 100],
-        data: {
-            dateOfArrival: Date.now(),
-            primaryKey: 1
-        },
-        actions: [
-            { action: 'open', title: 'Open App' },
-            { action: 'close', title: 'Close' }
-        ]
-    };
-
-    event.waitUntil(
-        self.registration.showNotification('PDF Generator Pro', options)
-    );
-});
-
-// Notification click handler
-self.addEventListener('notificationclick', (event) => {
-    event.notification.close();
-
-    if (event.action === 'open' || !event.action) {
-        event.waitUntil(
-            clients.openWindow('./')
-        );
     }
 });
 
