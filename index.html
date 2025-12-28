@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SudhirDevOps1 PDF Generator Pro</title>
+    <meta name="description" content="Professional PDF Generator with rich text editing, templates, themes, and more">
+    <meta name="author" content="Sudhir Singh">
+    <meta name="theme-color" content="#ce93d8">
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a2e' width='100' height='100' rx='20'/><rect fill='%23ce93d8' x='15' y='20' width='70' height='60' rx='8'/><text x='50' y='60' font-size='30' font-weight='bold' text-anchor='middle' fill='%231a1a2e'>PDF</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%231a1a2e' width='180' height='180' rx='40'/><rect fill='%23ce93d8' x='30' y='36' width='120' height='108' rx='12'/><text x='90' y='108' font-size='50' font-weight='bold' text-anchor='middle' fill='%231a1a2e'>PDF</text></svg>">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PDF Generator">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Fira+Code&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
+
+        /* ============================================
+           THEME VARIABLES - 10 THEMES
+           ============================================ */
+        :root {
+            --brand: #ce93d8;
+            --brand-light: #e1bee7;
+            --brand-dark: #ab47bc;
+            --accent-yellow: #f8ab2f;
+            --accent-blue: #29daff;
+            --accent-green: #4ade80;
+            --accent-purple: #ce93d8;
+            --accent-bright-blue: #81d4fa;
+            --bg: #1a1a2e;
+            --surface: #16213e;
+            --text-color: #e0e0e0;
+            --panel-bg: rgba(22, 33, 62, 0.95);
+            --border-color: rgba(206, 147, 216, 0.2);
+            --code-bg: #0f0f23;
+            --code-text: #e0e0e0;
+        }
+
+        /* Theme: Dark Purple (Default) */
+        .theme-dark-purple {
+            --bg: #1a1a2e;
+            --surface: #16213e;
+            --text-color: #e0e0e0;
+            --panel-bg: rgba(22, 33, 62, 0.95);
+            --border-color: rgba(206, 147, 216, 0.2);
+            --accent-purple: #ce93d8;
+        }
+
+        /* Theme: Ocean Blue */
+        .theme-ocean-blue {
+            --bg: #0a192f;
+            --surface: #112240;
+            --text-color: #ccd6f6;
+            --panel-bg: rgba(17, 34, 64, 0.95);
+            --border-color: rgba(100, 255, 218, 0.2);
+            --accent-purple: #64ffda;
+            --accent-yellow: #ffd700;
+        }
+
+        /* Theme: Forest Green */
+        .theme-forest-green {
+            --bg: #1a2f1a;
+            --surface: #243524;
+            --text-color: #d4e5d4;
+            --panel-bg: rgba(36, 53, 36, 0.95);
+            --border-color: rgba(76, 175, 80, 0.2);
+            --accent-purple: #4caf50;
+            --accent-yellow: #ffeb3b;
+        }
+
+        /* Theme: Sunset Orange */
+        .theme-sunset-orange {
+            --bg: #2d1b1b;
+            --surface: #3d2525;
+            --text-color: #f5e6e6;
+            --panel-bg: rgba(61, 37, 37, 0.95);
+            --border-color: rgba(255, 152, 0, 0.2);
+            --accent-purple: #ff9800;
+            --accent-yellow: #ffeb3b;
+        }
+
+        /* Theme: Midnight */
+        .theme-midnight {
+            --bg: #0d0d0d;
+            --surface: #1a1a1a;
+            --text-color: #ffffff;
+            --panel-bg: rgba(26, 26, 26, 0.95);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-purple: #bb86fc;
+            --accent-yellow: #cf6679;
+        }
+
+        /* Theme: Light Mode */
+        .theme-light {
+            --bg: #f5f5f5;
+            --surface: #ffffff;
+            --text-color: #333333;
+            --panel-bg: rgba(255, 255, 255, 0.95);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --accent-purple: #7c4dff;
+            --accent-yellow: #ff6d00;
+            --code-bg: #f8f8f8;
+            --code-text: #333;
+        }
+
+        /* Theme: Cyberpunk */
+        .theme-cyberpunk {
+            --bg: #0a0a0a;
+            --surface: #1a0a2e;
+            --text-color: #00ff9f;
+            --panel-bg: rgba(26, 10, 46, 0.95);
+            --border-color: rgba(255, 0, 128, 0.3);
+            --accent-purple: #ff0080;
+            --accent-yellow: #00ff9f;
+            --accent-blue: #00d4ff;
+        }
+
+        /* Theme: Rose Gold */
+        .theme-rose-gold {
+            --bg: #2d2226;
+            --surface: #3d2f33;
+            --text-color: #f8e1e7;
+            --panel-bg: rgba(61, 47, 51, 0.95);
+            --border-color: rgba(255, 182, 193, 0.2);
+            --accent-purple: #ffb6c1;
+            --accent-yellow: #ffd700;
+        }
+
+        /* Theme: Nord */
+        .theme-nord {
+            --bg: #2e3440;
+            --surface: #3b4252;
+            --text-color: #eceff4;
+            --panel-bg: rgba(59, 66, 82, 0.95);
+            --border-color: rgba(136, 192, 208, 0.2);
+            --accent-purple: #88c0d0;
+            --accent-yellow: #ebcb8b;
+        }
+
+        /* Theme: Dracula */
+        .theme-dracula {
+            --bg: #282a36;
+            --surface: #44475a;
+            --text-color: #f8f8f2;
+            --panel-bg: rgba(68, 71, 90, 0.95);
+            --border-color: rgba(189, 147, 249, 0.2);
+            --accent-purple: #bd93f9;
+            --accent-yellow: #f1fa8c;
+            --accent-green: #50fa7b;
+            --accent-blue: #8be9fd;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-color); 
+            transition: all 0.3s ease; 
+        }
+        
+        .sidebar { 
+            background: var(--panel-bg); 
+            backdrop-filter: blur(12px); 
+            border-right: 1px solid var(--border-color); 
+        }
+        
+        .page-canvas { 
+            background: var(--surface); 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); 
+        }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+        .loading-overlay { 
+            display: none; 
+            position: fixed; 
+            inset: 0; 
+            background: rgba(0, 0, 0, 0.9); 
+            z-index: 1000; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+        }
+
+        /* Page Canvas - A4 Size */
+        .page-canvas { 
+            width: 210mm; 
+            min-height: 297mm; 
+            margin: 20px auto; 
+            padding: 15mm 20mm; 
+            position: relative; 
+            transition: transform 0.3s ease; 
+            transform-origin: top center;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-area { 
+            flex: 1;
+            overflow: visible;
+        }
+
+        .prose { 
+            color: var(--text-color); 
+            line-height: 1.8; 
+        }
+        .prose strong { color: var(--accent-purple); font-weight: 700; }
+        .prose em { font-style: italic; }
+        .prose u { text-decoration: underline; }
+        .prose code { 
+            background: var(--code-bg); 
+            color: var(--accent-green); 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+        }
+
+        /* Headings */
+        .prose h1 { font-size: 2rem; font-weight: 800; margin: 1rem 0 0.5rem; color: var(--accent-yellow); }
+        .prose h2 { font-size: 1.5rem; font-weight: 700; margin: 0.875rem 0 0.5rem; color: var(--accent-purple); }
+        .prose h3 { font-size: 1.25rem; font-weight: 600; margin: 0.75rem 0 0.5rem; color: var(--accent-blue); }
+        .prose h4 { font-size: 1.1rem; font-weight: 600; margin: 0.625rem 0 0.5rem; color: var(--accent-green); }
+
+        /* Lists */
+        .prose ul { list-style-type: disc; margin-left: 1.5rem; margin-bottom: 0.75rem; }
+        .prose ol { list-style-type: decimal; margin-left: 1.5rem; margin-bottom: 0.75rem; }
+        .prose li { margin-bottom: 0.25rem; }
+
+        /* Text Alignment */
+        .text-left { text-align: left !important; }
+        .text-center { text-align: center !important; }
+        .text-right { text-align: right !important; }
+        .text-justify { text-align: justify !important; }
+        
+        /* HIGHLIGHT STYLES - Fixed for PDF */
+        .pdf-highlight, [data-highlight="true"] {
+            background-color: #fef08a !important;
+            color: #000 !important;
+            padding: 1px 4px;
+            border-radius: 3px;
+            display: inline;
+            -webkit-box-decoration-break: clone;
+            box-decoration-break: clone;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        
+        .page-footer { 
+            margin-top: auto; 
+            padding-top: 1rem; 
+            border-top: 1px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 10px;
+        }
+        
+        .watermark { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%) rotate(-45deg); 
+            font-size: 80px; 
+            color: rgba(206, 147, 216, 0.08); 
+            pointer-events: none; 
+            text-transform: uppercase; 
+            font-weight: 900; 
+            z-index: 0; 
+            white-space: nowrap; 
+        }
+        
+        .doc-header-title { color: var(--accent-yellow); text-align: center; }
+        .page-number-display { color: var(--accent-blue); }
+        
+        /* Code Block Styles */
+        .code-wrap { 
+            background: #1e1e1e !important; 
+            border-radius: 12px; 
+            padding: 0; 
+            margin: 1rem 0; 
+            position: relative; 
+            font-family: 'Fira Code', monospace; 
+            border: 1px solid #3c3c3c;
+            overflow: hidden;
+        }
+        
+        .code-wrap pre { 
+            padding: 2.5rem 1rem 1rem 1rem !important; 
+            margin: 0 !important; 
+            background: #1e1e1e !important; 
+            color: #e0e0e0 !important;
+            overflow-x: auto !important;
+            white-space: pre !important;
+            font-size: 13px;
+            line-height: 1.6;
+            tab-size: 4;
+        }
+        
+        .code-wrap code {
+            color: #aed581 !important;
+            font-family: 'Fira Code', monospace !important;
+            background: transparent !important;
+            display: block !important;
+            white-space: pre !important;
+            tab-size: 4;
+            line-height: 1.6;
+        }
+        
+        /* Prism Token Colors */
+        .token.tag { color: #4fc3f7 !important; }
+        .token.attr-name { color: #ce93d8 !important; }
+        .token.attr-value, .token.string { color: #aed581 !important; }
+        .token.keyword { color: #ce93d8 !important; }
+        .token.function { color: #f9d949 !important; }
+        .token.number { color: #f9d949 !important; }
+        .token.operator, .token.punctuation { color: #81d4fa !important; }
+        .token.comment { color: #6a9955 !important; font-style: italic; }
+        .token.class-name { color: #4fc3f7 !important; }
+        .token.boolean { color: #ce93d8 !important; }
+        .token.property { color: #9cdcfe !important; }
+        
+        .code-lang-tag, .copy-code-btn { 
+            position: absolute; 
+            top: 0.5rem; 
+            font-size: 10px; 
+            font-weight: 800; 
+            padding: 4px 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            z-index: 10; 
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .code-lang-tag { left: 0.75rem; background: var(--accent-yellow); color: #1e1e1e; }
+        .copy-code-btn { 
+            right: 0.75rem; 
+            background: var(--accent-blue); 
+            color: #1e1e1e;
+            border: none;
+            transition: all 0.2s;
+        }
+        .copy-code-btn:hover { background: var(--accent-bright-blue); transform: scale(1.05); }
+
+        /* Content Block with Delete Button */
+        .content-block { position: relative; margin: 0.75rem 0; }
+        .content-block:hover .block-delete-btn { opacity: 1; }
+        .block-delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 10px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+        }
+        .block-delete-btn:hover { background: #dc2626; transform: scale(1.1); }
+        .rendering .block-delete-btn { display: none !important; }
+
+        /* Hint & Solution Boxes */
+        .hint-box {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-left: 5px solid #ef4444;
+            color: #fca5a5;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+        }
+        .hint-box strong { color: #f87171; }
+        
+        .solution-box {
+            background-color: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-left: 5px solid #22c55e;
+            color: #86efac;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+        }
+        .solution-box strong { color: #4ade80; }
+
+        /* Info & Warning Boxes */
+        .info-box {
+            background-color: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 5px solid #3b82f6;
+            color: #93c5fd;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+        }
+        .info-box strong { color: #60a5fa; }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-left: 5px solid #f59e0b;
+            color: #fcd34d;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+        }
+        .warning-box strong { color: #fbbf24; }
+
+        /* Image Block */
+        .image-block { padding: 0.5rem; position: relative; }
+        .image-block.align-left { text-align: left; }
+        .image-block.align-center { text-align: center; }
+        .image-block.align-right { text-align: right; }
+        
+        .image-block img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .image-caption {
+            margin-top: 0.5rem;
+            font-size: 12px;
+            color: #888;
+            font-style: italic;
+        }
+        
+        /* Image Controls */
+        .image-controls {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .image-control-btn {
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 700;
+            border-radius: 6px;
+            border: 1px solid #555;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .image-control-btn:hover { background: #555; border-color: var(--accent-purple); }
+        .image-control-btn.active { background: var(--accent-purple); border-color: var(--accent-purple); color: #000; }
+        .rendering .image-controls { display: none !important; }
+
+        /* Table Styles */
+        .prose table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 14px;
+        }
+        .prose th, .prose td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+        }
+        .prose th {
+            background: var(--accent-purple);
+            color: #000;
+            font-weight: 700;
+        }
+        .prose tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Sidebar Styles */
+        .sidebar-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .sidebar-label {
+            color: var(--accent-yellow);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .sidebar-input {
+            width: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.2s;
+        }
+        .sidebar-input:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 3px rgba(206, 147, 216, 0.2);
+        }
+        
+        .btn-element {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 9px;
+        }
+        .btn-element:hover {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+            transform: translateY(-2px);
+        }
+        .btn-element i { font-size: 14px; }
+        
+        .btn-hint { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: #f87171; }
+        .btn-solution { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); color: #4ade80; }
+        .btn-image { background: rgba(79, 195, 247, 0.1); border-color: rgba(79, 195, 247, 0.3); color: #4fc3f7; }
+        .btn-table { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.3); color: #a855f7; }
+        
+        .editor-tools {
+            background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.2) 100%);
+            border-radius: 12px;
+            padding: 0.875rem;
+            border: 1px solid var(--border-color);
+        }
+        .editor-tools-label {
+            color: var(--accent-blue);
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        
+        .tool-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.4rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            color: #e0e0e0;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 12px;
+        }
+        .tool-btn:hover { background: rgba(206, 147, 216, 0.2); color: var(--accent-purple); }
+        .tool-btn:active { transform: scale(0.95); }
+        
+        .tool-btn-secondary {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e0e0e0;
+            padding: 0.4rem 0.6rem;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .tool-btn-secondary:hover { background: rgba(79, 195, 247, 0.2); color: var(--accent-blue); }
+        .tool-btn-danger { background: rgba(239, 68, 68, 0.1); color: #f87171; }
+        .tool-btn-danger:hover { background: rgba(239, 68, 68, 0.2); }
+        
+        .btn-export {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #9333ea 100%);
+            color: #fff;
+            padding: 0.875rem;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 20px rgba(206, 147, 216, 0.3);
+        }
+        .btn-export:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(206, 147, 216, 0.4); }
+        
+        .stats-panel { color: var(--accent-green); font-size: 11px; font-weight: 600; font-family: 'Fira Code', monospace; }
+        
+        /* Theme Selector */
+        .theme-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+        .theme-btn {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        .theme-btn:hover { transform: scale(1.1); }
+        .theme-btn.active { border-color: #fff; box-shadow: 0 0 10px rgba(255,255,255,0.3); }
+        .theme-btn::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 3px;
+            background: inherit;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--surface);
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .zoom-btn { color: var(--accent-blue); background: none; border: none; cursor: pointer; padding: 0.25rem; transition: all 0.2s; }
+        .zoom-btn:hover { color: var(--accent-purple); transform: scale(1.1); }
+        .zoom-value { color: var(--accent-yellow); font-weight: 800; font-size: 11px; min-width: 35px; text-align: center; font-family: 'Fira Code', monospace; }
+        
+        .save-status { display: flex; align-items: center; gap: 0.5rem; }
+        .save-dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; }
+        .save-dot.saving { animation: pulse 1s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .save-text { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-green); }
+
+        @media print { .no-print { display: none !important; } }
+        .rendering .no-pdf { display: none !important; }
+        .rendering [contenteditable="true"] { outline: none !important; }
+        .rendering .page-canvas { box-shadow: none !important; }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, #9333ea 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(206, 147, 216, 0.3);
+        }
+        
+        .logo-text {
+            font-size: 16px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .checkbox-wrapper { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        .checkbox-wrapper input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent-purple); cursor: pointer; }
+        .checkbox-wrapper label { font-size: 12px; color: var(--text-color); cursor: pointer; }
+
+        .delete-page-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            z-index: 100;
+        }
+        .delete-page-btn:hover { background: #ef4444; transform: scale(1.05); }
+        .rendering .delete-page-btn { display: none !important; }
+
+        /* Color Picker Section */
+        .color-section { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+        .color-section-title { font-size: 10px; font-weight: 700; color: #e0e0e0; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+        .color-row { display: flex; align-items: center; gap: 4px; margin-bottom: 6px; }
+        .color-picker-wrapper {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 2px solid #555;
+            cursor: pointer;
+        }
+        .color-picker-wrapper input[type="color"] {
+            width: 150%;
+            height: 150%;
+            margin: -25%;
+            border: none;
+            cursor: pointer;
+        }
+        .color-btn { padding: 4px 8px; border-radius: 4px; font-size: 9px; font-weight: 700; cursor: pointer; transition: all 0.2s; border: none; flex: 1; }
+        .color-btn-apply { background: var(--accent-purple); color: #fff; }
+        .color-btn-apply:hover { opacity: 0.85; }
+        .color-btn-clear { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .color-btn-clear:hover { background: rgba(239, 68, 68, 0.3); }
+
+        .quick-colors { display: flex; flex-wrap: wrap; gap: 3px; }
+        .quick-colors button { width: 20px; height: 20px; border-radius: 4px; border: 2px solid transparent; cursor: pointer; transition: all 0.2s; }
+        .quick-colors button:hover { transform: scale(1.15); border-color: white; }
+
+        .heading-select, .font-size-select {
+            background: rgba(255, 255, 255, 0.08);
+            color: #e0e0e0;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+        .heading-select:focus, .font-size-select:focus { outline: none; border-color: var(--accent-purple); }
+
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal-content { background: var(--surface); border-radius: 16px; padding: 20px; max-width: 500px; width: 90%; border: 1px solid var(--border-color); max-height: 80vh; overflow-y: auto; }
+        .modal-title { font-size: 16px; font-weight: 800; color: var(--accent-yellow); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .modal-btn { width: 100%; padding: 10px; border-radius: 8px; font-weight: 700; cursor: pointer; margin-bottom: 8px; transition: all 0.2s; border: none; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12px; }
+        .modal-btn-primary { background: var(--accent-purple); color: #fff; }
+        .modal-btn-primary:hover { opacity: 0.9; }
+        .modal-btn-danger { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .modal-btn-danger:hover { background: rgba(239, 68, 68, 0.3); }
+        .modal-btn-secondary { background: rgba(255, 255, 255, 0.1); color: #e0e0e0; }
+        .modal-btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+        /* Template Cards */
+        .template-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+        .template-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .template-card:hover { border-color: var(--accent-purple); transform: translateY(-2px); }
+        .template-card i { font-size: 24px; color: var(--accent-purple); margin-bottom: 8px; }
+        .template-card h4 { font-size: 12px; font-weight: 700; color: var(--text-color); margin-bottom: 4px; }
+        .template-card p { font-size: 10px; color: #888; }
+
+        /* AdSense Placeholder */
+        .ad-placeholder {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) { .sidebar { width: 280px !important; } }
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100% !important; height: auto !important; max-height: 50vh; border-right: none; border-bottom: 1px solid var(--border-color); }
+            main { padding: 1rem; }
+            #canvas-wrapper { transform: scale(0.5) !important; }
+        }
+        @media (max-width: 600px) { .sidebar { padding: 0.75rem; } #canvas-wrapper { transform: scale(0.35) !important; } }
+
+        /* Install Button */
+        .install-btn {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+        }
+        .install-btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body class="h-screen flex overflow-hidden theme-dark-purple">
+
+    <!-- Loader -->
+    <div id="loader" class="loading-overlay">
+        <div class="w-12 h-12 border-4 border-purple-400 border-t-transparent rounded-full animate-spin"></div>
+        <p class="mt-4 font-bold text-purple-300">Generating PDF...</p>
+    </div>
+
+    <!-- Page Management Modal -->
+    <div id="page-management-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-title"><i class="fas fa-cog"></i> Page Management</h3>
+            <button onclick="startNewDocument()" class="modal-btn modal-btn-primary">
+                <i class="fas fa-file-alt"></i> New Document
+            </button>
+            <button onclick="clearSavedData()" class="modal-btn modal-btn-danger">
+                <i class="fas fa-trash"></i> Clear Saved Data
+            </button>
+            <button onclick="exportAsJSON()" class="modal-btn modal-btn-secondary">
+                <i class="fas fa-download"></i> Export as JSON
+            </button>
+            <button onclick="importFromJSON()" class="modal-btn modal-btn-secondary">
+                <i class="fas fa-upload"></i> Import from JSON
+            </button>
+            <input type="file" id="json-import" accept=".json" style="display: none;" onchange="handleJSONImport(event)">
+            <button onclick="closeModal('page-management-modal')" class="modal-btn modal-btn-secondary mt-2">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Templates Modal -->
+    <div id="templates-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-title"><i class="fas fa-file-invoice"></i> Choose Template</h3>
+            <div class="template-grid">
+                <div class="template-card" onclick="loadTemplate('blank')">
+                    <i class="fas fa-file"></i>
+                    <h4>Blank</h4>
+                    <p>Start from scratch</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('resume')">
+                    <i class="fas fa-user-tie"></i>
+                    <h4>Resume</h4>
+                    <p>Professional CV</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('invoice')">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <h4>Invoice</h4>
+                    <p>Business invoice</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('report')">
+                    <i class="fas fa-chart-bar"></i>
+                    <h4>Report</h4>
+                    <p>Project report</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('letter')">
+                    <i class="fas fa-envelope"></i>
+                    <h4>Letter</h4>
+                    <p>Formal letter</p>
+                </div>
+                <div class="template-card" onclick="loadTemplate('notes')">
+                    <i class="fas fa-sticky-note"></i>
+                    <h4>Notes</h4>
+                    <p>Study notes</p>
+                </div>
+            </div>
+            <button onclick="closeModal('templates-modal')" class="modal-btn modal-btn-secondary mt-4">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Table Modal -->
+    <div id="table-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-title"><i class="fas fa-table"></i> Insert Table</h3>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Rows</label>
+                    <input type="number" id="table-rows" value="3" min="1" max="20" class="sidebar-input">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Columns</label>
+                    <input type="number" id="table-cols" value="3" min="1" max="10" class="sidebar-input">
+                </div>
+            </div>
+            <button onclick="insertTable()" class="modal-btn modal-btn-primary">
+                <i class="fas fa-plus"></i> Insert Table
+            </button>
+            <button onclick="closeModal('table-modal')" class="modal-btn modal-btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Hidden Image Input -->
+    <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-800 text-white py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 z-50 text-sm"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar w-72 h-full flex flex-col p-4 no-print overflow-y-auto">
+        <div class="flex items-center gap-2 mb-4">
+            <div class="logo-icon"><i class="fas fa-file-pdf"></i></div>
+            <div>
+                <h1 class="logo-text">SudhirDevOps1</h1>
+                <p class="text-[9px] font-semibold text-gray-500 uppercase tracking-wider">PDF Generator Pro</p>
+            </div>
+        </div>
+
+        <div class="space-y-3 flex-grow overflow-y-auto">
+            <!-- Document Details -->
+            <section class="sidebar-section">
+                <label class="sidebar-label">📄 Document</label>
+                <input id="doc-title" type="text" placeholder="Document Title" value="My Document" class="sidebar-input mb-2">
+                <input id="doc-author" type="text" placeholder="Author Name" value="Sudhir Singh" class="sidebar-input">
+            </section>
+
+            <!-- Settings -->
+            <section class="sidebar-section">
+                <label class="sidebar-label">⚙️ Settings</label>
+                <input id="doc-watermark" type="text" placeholder="Watermark (optional)" class="sidebar-input mb-2">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="page-numbers-toggle" checked>
+                    <label for="page-numbers-toggle">Show Page Numbers</label>
+                </div>
+            </section>
+
+            <!-- Themes -->
+            <section class="sidebar-section">
+                <label class="sidebar-label">🎨 Themes</label>
+                <div class="theme-selector">
+                    <button class="theme-btn active" style="background: linear-gradient(135deg, #1a1a2e, #ce93d8)" onclick="setTheme('dark-purple')" title="Dark Purple"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #0a192f, #64ffda)" onclick="setTheme('ocean-blue')" title="Ocean Blue"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #1a2f1a, #4caf50)" onclick="setTheme('forest-green')" title="Forest Green"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #2d1b1b, #ff9800)" onclick="setTheme('sunset-orange')" title="Sunset Orange"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #0d0d0d, #bb86fc)" onclick="setTheme('midnight')" title="Midnight"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #f5f5f5, #7c4dff)" onclick="setTheme('light')" title="Light Mode"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #0a0a0a, #ff0080)" onclick="setTheme('cyberpunk')" title="Cyberpunk"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #2d2226, #ffb6c1)" onclick="setTheme('rose-gold')" title="Rose Gold"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #2e3440, #88c0d0)" onclick="setTheme('nord')" title="Nord"></button>
+                    <button class="theme-btn" style="background: linear-gradient(135deg, #282a36, #bd93f9)" onclick="setTheme('dracula')" title="Dracula"></button>
+                </div>
+            </section>
+
+            <!-- Add Elements -->
+            <section class="sidebar-section">
+                <label class="sidebar-label">➕ Elements</label>
+                <div class="grid grid-cols-4 gap-1.5">
+                    <button onclick="addBlock('text')" class="btn-element" title="Text">
+                        <i class="fas fa-paragraph"></i>
+                        <span>Text</span>
+                    </button>
+                    <button onclick="addBlock('code')" class="btn-element" title="Code">
+                        <i class="fas fa-code"></i>
+                        <span>Code</span>
+                    </button>
+                    <button onclick="addBlock('image')" class="btn-element btn-image" title="Image">
+                        <i class="fas fa-image"></i>
+                        <span>Image</span>
+                    </button>
+                    <button onclick="openModal('table-modal')" class="btn-element btn-table" title="Table">
+                        <i class="fas fa-table"></i>
+                        <span>Table</span>
+                    </button>
+                    <button onclick="addBlock('bullet')" class="btn-element" title="Bullet List">
+                        <i class="fas fa-list-ul"></i>
+                        <span>Bullets</span>
+                    </button>
+                    <button onclick="addBlock('number')" class="btn-element" title="Numbered List">
+                        <i class="fas fa-list-ol"></i>
+                        <span>Numbers</span>
+                    </button>
+                    <button onclick="addBlock('hint')" class="btn-element btn-hint" title="Hint">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Hint</span>
+                    </button>
+                    <button onclick="addBlock('solution')" class="btn-element btn-solution" title="Solution">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Solution</span>
+                    </button>
+                    <button onclick="addBlock('info')" class="btn-element" title="Info Box">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Info</span>
+                    </button>
+                    <button onclick="addBlock('warning')" class="btn-element" title="Warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Warning</span>
+                    </button>
+                    <button onclick="addBlock('divider')" class="btn-element" title="Divider">
+                        <i class="fas fa-minus"></i>
+                        <span>Divider</span>
+                    </button>
+                    <button onclick="openModal('templates-modal')" class="btn-element" title="Templates">
+                        <i class="fas fa-file-invoice"></i>
+                        <span>Template</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Editor Tools -->
+            <section class="editor-tools">
+                <label class="editor-tools-label">🛠️ Format</label>
+                
+                <!-- Undo/Redo -->
+                <div class="flex gap-1 mb-2">
+                    <button onclick="document.execCommand('undo')" class="tool-btn flex-1" title="Undo (Ctrl+Z)">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button onclick="document.execCommand('redo')" class="tool-btn flex-1" title="Redo (Ctrl+Y)">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                </div>
+
+                <!-- Text Formatting -->
+                <div class="grid grid-cols-6 gap-1 mb-2">
+                    <button onclick="formatText('bold')" class="tool-btn" title="Bold (Ctrl+B)"><i class="fas fa-bold"></i></button>
+                    <button onclick="formatText('italic')" class="tool-btn" title="Italic (Ctrl+I)"><i class="fas fa-italic"></i></button>
+                    <button onclick="formatText('underline')" class="tool-btn" title="Underline (Ctrl+U)"><i class="fas fa-underline"></i></button>
+                    <button onclick="formatText('strikeThrough')" class="tool-btn" title="Strikethrough"><i class="fas fa-strikethrough"></i></button>
+                    <button onclick="formatText('subscript')" class="tool-btn" title="Subscript"><i class="fas fa-subscript"></i></button>
+                    <button onclick="formatText('superscript')" class="tool-btn" title="Superscript"><i class="fas fa-superscript"></i></button>
+                </div>
+
+                <!-- Text Alignment -->
+                <div class="grid grid-cols-4 gap-1 mb-2">
+                    <button onclick="formatText('justifyLeft')" class="tool-btn" title="Align Left"><i class="fas fa-align-left"></i></button>
+                    <button onclick="formatText('justifyCenter')" class="tool-btn" title="Align Center"><i class="fas fa-align-center"></i></button>
+                    <button onclick="formatText('justifyRight')" class="tool-btn" title="Align Right"><i class="fas fa-align-right"></i></button>
+                    <button onclick="formatText('justifyFull')" class="tool-btn" title="Justify"><i class="fas fa-align-justify"></i></button>
+                </div>
+
+                <!-- Headings -->
+                <div class="mb-2">
+                    <select id="heading-select" onchange="insertHeading(this.value)" class="heading-select">
+                        <option value="">Insert Heading...</option>
+                        <option value="h1">H1 - Main Title</option>
+                        <option value="h2">H2 - Section</option>
+                        <option value="h3">H3 - Subsection</option>
+                        <option value="h4">H4 - Minor</option>
+                    </select>
+                </div>
+
+                <!-- Font Size -->
+                <div class="mb-2">
+                    <select id="font-size-select" onchange="applyFontSize(this.value)" class="font-size-select">
+                        <option value="1">Tiny</option>
+                        <option value="2">Small</option>
+                        <option value="3" selected>Normal</option>
+                        <option value="4">Medium</option>
+                        <option value="5">Large</option>
+                        <option value="6">X-Large</option>
+                        <option value="7">Huge</option>
+                    </select>
+                </div>
+
+                <!-- Text Color -->
+                <div class="color-section">
+                    <div class="color-section-title"><i class="fas fa-font"></i> Text Color</div>
+                    <div class="color-row">
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="text-color-picker" value="#ffffff">
+                        </div>
+                        <button onclick="applyTextColor()" class="color-btn color-btn-apply">Apply</button>
+                        <button onclick="clearTextColor()" class="color-btn color-btn-clear">Clear</button>
+                    </div>
+                    <div class="quick-colors">
+                        <button onclick="setTextColorQuick('#ef4444')" style="background:#ef4444"></button>
+                        <button onclick="setTextColorQuick('#f97316')" style="background:#f97316"></button>
+                        <button onclick="setTextColorQuick('#eab308')" style="background:#eab308"></button>
+                        <button onclick="setTextColorQuick('#22c55e')" style="background:#22c55e"></button>
+                        <button onclick="setTextColorQuick('#3b82f6')" style="background:#3b82f6"></button>
+                        <button onclick="setTextColorQuick('#8b5cf6')" style="background:#8b5cf6"></button>
+                        <button onclick="setTextColorQuick('#ec4899')" style="background:#ec4899"></button>
+                        <button onclick="setTextColorQuick('#ffffff')" style="background:#ffffff"></button>
+                        <button onclick="setTextColorQuick('#000000')" style="background:#000000;border:1px solid #666"></button>
+                    </div>
+                </div>
+
+                <!-- Highlight -->
+                <div class="color-section">
+                    <div class="color-section-title"><i class="fas fa-highlighter"></i> Highlight</div>
+                    <div class="color-row">
+                        <div class="color-picker-wrapper">
+                            <input type="color" id="highlight-color-picker" value="#fef08a">
+                        </div>
+                        <button onclick="applyHighlight()" class="color-btn color-btn-apply">Apply</button>
+                        <button onclick="removeHighlight()" class="color-btn color-btn-clear">Remove</button>
+                    </div>
+                    <div class="quick-colors">
+                        <button onclick="setHighlightQuick('#fef08a')" style="background:#fef08a"></button>
+                        <button onclick="setHighlightQuick('#bbf7d0')" style="background:#bbf7d0"></button>
+                        <button onclick="setHighlightQuick('#bfdbfe')" style="background:#bfdbfe"></button>
+                        <button onclick="setHighlightQuick('#fecaca')" style="background:#fecaca"></button>
+                        <button onclick="setHighlightQuick('#e9d5ff')" style="background:#e9d5ff"></button>
+                        <button onclick="setHighlightQuick('#fed7aa')" style="background:#fed7aa"></button>
+                        <button onclick="setHighlightQuick('#fbcfe8')" style="background:#fbcfe8"></button>
+                        <button onclick="setHighlightQuick('#a5f3fc')" style="background:#a5f3fc"></button>
+                    </div>
+                </div>
+
+                <!-- Page Actions -->
+                <div class="grid grid-cols-2 gap-1 mt-2">
+                    <button onclick="addNewPage()" class="tool-btn-secondary"><i class="fas fa-plus"></i> Page</button>
+                    <button onclick="openModal('page-management-modal')" class="tool-btn-secondary"><i class="fas fa-cog"></i> Manage</button>
+                </div>
+                <button onclick="clearAll()" class="tool-btn-secondary tool-btn-danger w-full mt-1">
+                    <i class="fas fa-trash"></i> Clear All
+                </button>
+            </section>
+
+            <!-- Ad Placeholder -->
+            <div class="ad-placeholder">
+                <i class="fas fa-ad"></i> Advertisement Space
+                <br><span style="font-size:8px">Google AdSense</span>
+            </div>
+        </div>
+
+        <!-- Export & Install Buttons -->
+        <div class="space-y-2 mt-3">
+            <button id="install-btn" onclick="installPWA()" class="btn-export install-btn" style="display:none">
+                <i class="fas fa-download"></i> Install App
+            </button>
+            <button onclick="renderPDF()" class="btn-export">
+                <i class="fas fa-file-export"></i> Export PDF
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-3 flex items-center justify-between text-xs">
+            <div id="stats-panel" class="stats-panel">0 Words | 0 LoC</div>
+            <div class="save-status">
+                <span class="save-dot"></span>
+                <span id="save-status" class="save-text">Saved</span>
+            </div>
+        </footer>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-grow h-full overflow-y-auto p-4 relative">
+        <div class="flex justify-between items-center max-w-[210mm] mx-auto mb-3 no-print">
+            <div class="flex items-center gap-3">
+                <button onclick="document.execCommand('undo')" class="tool-btn" title="Undo"><i class="fas fa-undo"></i></button>
+                <button onclick="document.execCommand('redo')" class="tool-btn" title="Redo"><i class="fas fa-redo"></i></button>
+            </div>
+            <div class="zoom-controls">
+                <button onclick="adjustZoom(-0.1)" class="zoom-btn"><i class="fas fa-minus"></i></button>
+                <span id="zoom-val" class="zoom-value">70%</span>
+                <button onclick="adjustZoom(0.1)" class="zoom-btn"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+
+        <div id="canvas-wrapper" style="transform: scale(0.7); transform-origin: top center;">
+            <div id="pages-container">
+                <!-- Page 1 -->
+                <article class="page-canvas" id="page-1" data-page="1">
+                    <button class="delete-page-btn no-pdf" onclick="deletePage(this)" title="Delete this page">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                    <div class="watermark"></div>
+                    <header class="flex justify-center items-center border-b-2 pb-4 mb-6" style="border-color: var(--accent-purple);">
+                        <div class="text-center flex-grow">
+                            <h1 class="text-3xl font-black display-title doc-header-title"></h1>
+                        </div>
+                        <div class="text-right absolute right-[20mm]">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">Page</span>
+                            <div class="text-2xl font-black page-number-display">01</div>
+                        </div>
+                    </header>
+                    <div class="content-area">
+                        <div class="content-block">
+                            <button class="block-delete-btn no-pdf" onclick="deleteBlock(this)" title="Delete block">
+                                <i class="fas fa-times"></i>
+                            </button>
+                            <div contenteditable="true" class="prose max-w-none">
+                                <h1>Welcome to SudhirDevOps1 PDF Generator Pro</h1>
+                                <p>Start writing your document here. Use the toolbar on the left to add elements, format text, and customize your document.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span class="display-author text-gray-400 uppercase"></span>
+                        <span style="color: var(--accent-purple);">Generated via SudhirDevOps1</span>
+                    </footer>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script>
+        // ============================================
+        // SUDHIRDEVOPS1 PDF GENERATOR PRO - v2.0
+        // ============================================
+        
+        Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+        const $ = (id) => document.getElementById(id);
+        
+        const ui = {
+            docTitle: $('doc-title'),
+            docAuthor: $('doc-author'),
+            docWatermark: $('doc-watermark'),
+            pageNumbersToggle: $('page-numbers-toggle'),
+            zoomVal: $('zoom-val'),
+            pagesContainer: $('pages-container'),
+            saveStatus: $('save-status'),
+            statsPanel: $('stats-panel'),
+            canvasWrapper: $('canvas-wrapper'),
+            imageUpload: $('image-upload'),
+            textColorPicker: $('text-color-picker'),
+            highlightColorPicker: $('highlight-color-picker'),
+            headingSelect: $('heading-select'),
+            installBtn: $('install-btn')
+        };
+
+        // ============================================
+        // STATE MANAGEMENT
+        // ============================================
+        let currentZoom = 0.7;
+        let currentTheme = 'dark-purple';
+        let deferredPrompt = null;
+        const SAVE_KEY = 'sudhirDevOps_pdf_v20';
+        
+        let state = {
+            docTitle: 'My Document',
+            docAuthor: 'Sudhir Singh',
+            docWatermark: '',
+            showPageNumbers: true,
+            theme: 'dark-purple',
+            pagesHTML: ''
+        };
+
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+        function debounce(fn, delay) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn(...args), delay);
+            };
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = $('toast');
+            toast.textContent = msg;
+            toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 py-2 px-4 rounded-lg shadow-lg transition-opacity duration-300 z-50 opacity-100 text-sm';
+            
+            if (type === 'error') toast.classList.add('bg-red-600');
+            else if (type === 'success') toast.classList.add('bg-green-600');
+            else toast.classList.add('bg-gray-800');
+            
+            toast.classList.add('text-white');
+            setTimeout(() => toast.classList.remove('opacity-100'), 2500);
+        }
+
+        // ============================================
+        // THEME MANAGEMENT
+        // ============================================
+        function setTheme(themeName) {
+            const themes = ['dark-purple', 'ocean-blue', 'forest-green', 'sunset-orange', 'midnight', 'light', 'cyberpunk', 'rose-gold', 'nord', 'dracula'];
+            
+            themes.forEach(t => document.body.classList.remove('theme-' + t));
+            document.body.classList.add('theme-' + themeName);
+            currentTheme = themeName;
+            
+            // Update active button
+            document.querySelectorAll('.theme-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', themes[i] === themeName);
+            });
+            
+            state.theme = themeName;
+            saveState();
+            showToast('Theme changed!', 'success');
+        }
+
+        // ============================================
+        // TEXT FORMATTING FUNCTIONS
+        // ============================================
+        function formatText(cmd) {
+            document.execCommand(cmd, false, null);
+            saveState();
+        }
+
+        function applyFontSize(size) {
+            document.execCommand('fontSize', false, size);
+            saveState();
+        }
+
+        function insertHeading(level) {
+            if (!level) return;
+            const headingText = {
+                'h1': '<h1>Heading 1</h1>',
+                'h2': '<h2>Heading 2</h2>',
+                'h3': '<h3>Heading 3</h3>',
+                'h4': '<h4>Heading 4</h4>'
+            };
+            document.execCommand('insertHTML', false, headingText[level]);
+            ui.headingSelect.value = '';
+            saveState();
+            showToast(`${level.toUpperCase()} inserted!`, 'success');
+        }
+
+        // ============================================
+        // TEXT COLOR FUNCTIONS
+        // ============================================
+        function applyTextColor() {
+            const color = ui.textColorPicker.value;
+            applyColorToSelection(color);
+        }
+
+        function setTextColorQuick(color) {
+            ui.textColorPicker.value = color;
+            applyColorToSelection(color);
+        }
+
+        function applyColorToSelection(color) {
+            const sel = window.getSelection();
+            if (sel.rangeCount > 0 && !sel.isCollapsed) {
+                document.execCommand('styleWithCSS', false, true);
+                document.execCommand('foreColor', false, color);
+                saveState();
+                showToast('Color applied!', 'success');
+            } else {
+                showToast('Select text first!', 'error');
+            }
+        }
+
+        function clearTextColor() {
+            document.execCommand('removeFormat', false, null);
+            saveState();
+            showToast('Formatting cleared!', 'info');
+        }
+
+        // ============================================
+        // HIGHLIGHT FUNCTIONS - FIXED FOR PDF
+        // ============================================
+        function applyHighlight() {
+            const color = ui.highlightColorPicker.value;
+            applyHighlightToSelection(color);
+        }
+
+        function setHighlightQuick(color) {
+            ui.highlightColorPicker.value = color;
+            applyHighlightToSelection(color);
+        }
+
+        function applyHighlightToSelection(color) {
+            const sel = window.getSelection();
+            if (!sel.rangeCount || sel.isCollapsed) {
+                showToast('Select text first!', 'error');
+                return;
+            }
+
+            const range = sel.getRangeAt(0);
+            const selectedText = range.toString();
+            
+            if (selectedText.trim() === '') {
+                showToast('Select text first!', 'error');
+                return;
+            }
+
+            // Create span with inline styles for PDF compatibility
+            const span = document.createElement('span');
+            span.setAttribute('data-highlight', 'true');
+            span.setAttribute('data-color', color);
+            span.style.cssText = `background-color: ${color} !important; color: #000 !important; padding: 1px 4px; border-radius: 3px; display: inline; -webkit-print-color-adjust: exact; print-color-adjust: exact;`;
+
+            try {
+                range.surroundContents(span);
+            } catch (e) {
+                const fragment = range.extractContents();
+                span.appendChild(fragment);
+                range.insertNode(span);
+            }
+
+            sel.removeAllRanges();
+            saveState();
+            showToast('Highlight applied!', 'success');
+        }
+
+        function removeHighlight() {
+            const sel = window.getSelection();
+            if (!sel.rangeCount) {
+                showToast('Place cursor in highlighted text!', 'error');
+                return;
+            }
+
+            let node = sel.getRangeAt(0).commonAncestorContainer;
+            if (node.nodeType === Node.TEXT_NODE) node = node.parentNode;
+            
+            while (node && node !== document.body) {
+                if (node.hasAttribute && node.hasAttribute('data-highlight')) {
+                    const parent = node.parentNode;
+                    while (node.firstChild) parent.insertBefore(node.firstChild, node);
+                    parent.removeChild(node);
+                    parent.normalize();
+                    saveState();
+                    showToast('Highlight removed!', 'success');
+                    return;
+                }
+                node = node.parentNode;
+            }
+            showToast('No highlight found!', 'error');
+        }
+
+        // ============================================
+        // TABLE FUNCTIONS
+        // ============================================
+        function insertTable() {
+            const rows = parseInt($('table-rows').value) || 3;
+            const cols = parseInt($('table-cols').value) || 3;
+            
+            let tableHTML = '<table>';
+            // Header row
+            tableHTML += '<tr>';
+            for (let c = 0; c < cols; c++) {
+                tableHTML += `<th>Header ${c + 1}</th>`;
+            }
+            tableHTML += '</tr>';
+            
+            // Data rows
+            for (let r = 0; r < rows - 1; r++) {
+                tableHTML += '<tr>';
+                for (let c = 0; c < cols; c++) {
+                    tableHTML += `<td>Cell ${r + 1}-${c + 1}</td>`;
+                }
+                tableHTML += '</tr>';
+            }
+            tableHTML += '</table>';
+            
+            const lastPage = document.querySelector('.page-canvas:last-child');
+            let contentArea = lastPage?.querySelector('.content-area');
+            
+            if (!contentArea) {
+                addNewPage();
+                contentArea = document.querySelector('.page-canvas:last-child .content-area');
+            }
+            
+            const blockHTML = `
+                <div class="content-block">
+                    <button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button>
+                    <div contenteditable="true" class="prose max-w-none">${tableHTML}</div>
+                </div>
+            `;
+            
+            contentArea.insertAdjacentHTML('beforeend', blockHTML);
+            closeModal('table-modal');
+            saveState();
+            showToast('Table inserted!', 'success');
+        }
+
+        // ============================================
+        // TEMPLATE FUNCTIONS
+        // ============================================
+        function loadTemplate(templateName) {
+            const templates = {
+                blank: '<p>Start writing...</p>',
+                resume: `
+                    <h1 style="text-align: center; margin-bottom: 0.5rem;">JOHN DOE</h1>
+                    <p style="text-align: center; color: #888; margin-bottom: 1rem;">Software Developer | john@email.com | +1 234 567 890</p>
+                    <h2>Professional Summary</h2>
+                    <p>Experienced software developer with 5+ years of expertise in web development, cloud technologies, and DevOps practices.</p>
+                    <h2>Experience</h2>
+                    <h3>Senior Developer - TechCorp Inc.</h3>
+                    <p style="color: #888; font-size: 0.9em;">2020 - Present</p>
+                    <ul>
+                        <li>Led development of microservices architecture</li>
+                        <li>Implemented CI/CD pipelines using Jenkins and Docker</li>
+                        <li>Mentored junior developers</li>
+                    </ul>
+                    <h2>Skills</h2>
+                    <p>JavaScript, Python, Docker, Kubernetes, AWS, React, Node.js</p>
+                    <h2>Education</h2>
+                    <h3>B.S. Computer Science - State University</h3>
+                    <p style="color: #888;">2016 - 2020</p>
+                `,
+                invoice: `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 2rem;">
+                        <div>
+                            <h1>INVOICE</h1>
+                            <p>Invoice #: INV-001</p>
+                            <p>Date: ${new Date().toLocaleDateString()}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <h3>Your Company Name</h3>
+                            <p>123 Business Street</p>
+                            <p>City, State 12345</p>
+                        </div>
+                    </div>
+                    <h3>Bill To:</h3>
+                    <p>Client Name<br>Client Address<br>City, State ZIP</p>
+                    <table style="width: 100%; margin: 2rem 0;">
+                        <tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr>
+                        <tr><td>Service 1</td><td>1</td><td>$100</td><td>$100</td></tr>
+                        <tr><td>Service 2</td><td>2</td><td>$50</td><td>$100</td></tr>
+                        <tr><td colspan="3" style="text-align: right;"><strong>Total:</strong></td><td><strong>$200</strong></td></tr>
+                    </table>
+                    <p>Payment Terms: Due within 30 days</p>
+                `,
+                report: `
+                    <h1 style="text-align: center;">Project Report</h1>
+                    <p style="text-align: center; color: #888;">Prepared by: Your Name | Date: ${new Date().toLocaleDateString()}</p>
+                    <h2>1. Executive Summary</h2>
+                    <p>This report provides an overview of the project status, achievements, and next steps.</p>
+                    <h2>2. Project Overview</h2>
+                    <p>Description of the project scope and objectives.</p>
+                    <h2>3. Progress Update</h2>
+                    <h3>3.1 Completed Tasks</h3>
+                    <ul>
+                        <li>Task 1 - Completed</li>
+                        <li>Task 2 - Completed</li>
+                    </ul>
+                    <h3>3.2 In Progress</h3>
+                    <ul>
+                        <li>Task 3 - 75% complete</li>
+                    </ul>
+                    <h2>4. Conclusion</h2>
+                    <p>Summary and recommendations for next steps.</p>
+                `,
+                letter: `
+                    <p style="text-align: right;">${new Date().toLocaleDateString()}</p>
+                    <p>Recipient Name<br>Company Name<br>Address Line 1<br>City, State ZIP</p>
+                    <p>Dear [Recipient Name],</p>
+                    <p>I am writing to [purpose of the letter]. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>Paragraph 2 content goes here. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p>Thank you for your time and consideration. I look forward to hearing from you soon.</p>
+                    <p>Sincerely,</p>
+                    <p><br><br>Your Name<br>Your Title<br>Contact Information</p>
+                `,
+                notes: `
+                    <h1>Study Notes</h1>
+                    <p>Subject: [Topic Name] | Date: ${new Date().toLocaleDateString()}</p>
+                    <h2>Key Concepts</h2>
+                    <ul>
+                        <li><strong>Concept 1:</strong> Definition and explanation</li>
+                        <li><strong>Concept 2:</strong> Definition and explanation</li>
+                        <li><strong>Concept 3:</strong> Definition and explanation</li>
+                    </ul>
+                    <h2>Important Points</h2>
+                    <ol>
+                        <li>First important point</li>
+                        <li>Second important point</li>
+                        <li>Third important point</li>
+                    </ol>
+                    <h2>Summary</h2>
+                    <p>Key takeaways from this topic...</p>
+                    <h2>Questions to Review</h2>
+                    <ol>
+                        <li>Question 1?</li>
+                        <li>Question 2?</li>
+                    </ol>
+                `
+            };
+            
+            const contentArea = document.querySelector('.page-canvas:first-child .content-area');
+            if (contentArea) {
+                contentArea.innerHTML = `
+                    <div class="content-block">
+                        <button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button>
+                        <div contenteditable="true" class="prose max-w-none">${templates[templateName]}</div>
+                    </div>
+                `;
+            }
+            
+            closeModal('templates-modal');
+            saveState();
+            showToast(`${templateName.charAt(0).toUpperCase() + templateName.slice(1)} template loaded!`, 'success');
+        }
+
+        // ============================================
+        // BLOCK MANAGEMENT
+        // ============================================
+        function deleteBlock(btn) {
+            const block = btn.closest('.content-block');
+            if (block && confirm('Delete this block?')) {
+                block.remove();
+                saveState();
+                showToast('Block deleted!', 'success');
+            }
+        }
+
+        // ============================================
+        // PAGE MANAGEMENT
+        // ============================================
+        function getPageCount() {
+            return document.querySelectorAll('.page-canvas').length;
+        }
+
+        function deletePage(btn) {
+            if (getPageCount() <= 1) {
+                showToast('Cannot delete the only page!', 'error');
+                return;
+            }
+            if (confirm('Delete this page?')) {
+                btn.closest('.page-canvas').remove();
+                renumberPages();
+                saveState();
+                showToast('Page deleted!', 'success');
+            }
+        }
+
+        function renumberPages() {
+            document.querySelectorAll('.page-canvas').forEach((page, i) => {
+                page.id = `page-${i + 1}`;
+                page.dataset.page = i + 1;
+                const numEl = page.querySelector('.page-number-display');
+                if (numEl) numEl.textContent = (i + 1).toString().padStart(2, '0');
+            });
+        }
+
+        function addNewPage() {
+            const count = getPageCount() + 1;
+            if (count > 100) {
+                showToast('Maximum 100 pages!', 'error');
+                return;
+            }
+            
+            const pageHTML = `
+                <article class="page-canvas" id="page-${count}" data-page="${count}">
+                    <button class="delete-page-btn no-pdf" onclick="deletePage(this)"><i class="fas fa-trash"></i> Delete</button>
+                    <div class="watermark">${ui.docWatermark.value}</div>
+                    <header class="flex justify-center items-center border-b-2 pb-4 mb-6" style="border-color: var(--accent-purple);">
+                        <div class="text-center flex-grow">
+                            <h1 class="text-3xl font-black display-title doc-header-title">${ui.docTitle.value}</h1>
+                        </div>
+                        <div class="text-right absolute right-[20mm]" ${ui.pageNumbersToggle.checked ? '' : 'style="display:none"'}>
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">Page</span>
+                            <div class="text-2xl font-black page-number-display">${count.toString().padStart(2, '0')}</div>
+                        </div>
+                    </header>
+                    <div class="content-area">
+                        <div class="content-block">
+                            <button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button>
+                            <div contenteditable="true" class="prose max-w-none"><p></p></div>
+                        </div>
+                    </div>
+                    <footer class="page-footer">
+                        <span class="display-author text-gray-400 uppercase">Created by ${ui.docAuthor.value}</span>
+                        <span style="color: var(--accent-purple);">Generated via SudhirDevOps1</span>
+                    </footer>
+                </article>
+            `;
+            
+            ui.pagesContainer.insertAdjacentHTML('beforeend', pageHTML);
+            document.getElementById(`page-${count}`).scrollIntoView({ behavior: 'smooth' });
+            saveState();
+            showToast('New page added!', 'success');
+        }
+
+        // ============================================
+        // MODAL FUNCTIONS
+        // ============================================
+        function openModal(modalId) {
+            $(modalId).classList.add('active');
+        }
+        
+        function closeModal(modalId) {
+            $(modalId).classList.remove('active');
+        }
+
+        function startNewDocument() {
+            if (confirm('Start fresh? All content will be lost.')) {
+                localStorage.removeItem(SAVE_KEY);
+                location.reload();
+            }
+        }
+
+        function clearSavedData() {
+            if (confirm('Clear saved data?')) {
+                localStorage.removeItem(SAVE_KEY);
+                showToast('Saved data cleared!', 'success');
+                closeModal('page-management-modal');
+            }
+        }
+
+        function exportAsJSON() {
+            saveState();
+            const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `${ui.docTitle.value || 'document'}_backup.json`;
+            a.click();
+            showToast('Exported!', 'success');
+            closeModal('page-management-modal');
+        }
+
+        function importFromJSON() {
+            $('json-import').click();
+        }
+
+        function handleJSONImport(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                try {
+                    localStorage.setItem(SAVE_KEY, ev.target.result);
+                    showToast('Imported! Reloading...', 'success');
+                    setTimeout(() => location.reload(), 1000);
+                } catch (err) {
+                    showToast('Invalid file!', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAll() {
+            if (confirm('Clear everything?')) {
+                localStorage.removeItem(SAVE_KEY);
+                location.reload();
+            }
+        }
+
+        // ============================================
+        // STATE PERSISTENCE
+        // ============================================
+        function saveState() {
+            state.docTitle = ui.docTitle.value;
+            state.docAuthor = ui.docAuthor.value;
+            state.docWatermark = ui.docWatermark.value;
+            state.showPageNumbers = ui.pageNumbersToggle.checked;
+            state.theme = currentTheme;
+            state.pagesHTML = ui.pagesContainer.innerHTML;
+            
+            localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+            
+            document.querySelector('.save-dot').classList.add('saving');
+            ui.saveStatus.textContent = 'Saving...';
+            
+            setTimeout(() => {
+                document.querySelector('.save-dot').classList.remove('saving');
+                ui.saveStatus.textContent = 'Saved';
+            }, 600);
+            
+            updateStats();
+        }
+
+        const autoSave = debounce(saveState, 800);
+
+        function loadState() {
+            const saved = localStorage.getItem(SAVE_KEY);
+            if (saved) {
+                try {
+                    state = JSON.parse(saved);
+                    ui.docTitle.value = state.docTitle || 'My Document';
+                    ui.docAuthor.value = state.docAuthor || 'Sudhir Singh';
+                    ui.docWatermark.value = state.docWatermark || '';
+                    ui.pageNumbersToggle.checked = state.showPageNumbers !== false;
+                    
+                    if (state.pagesHTML) {
+                        ui.pagesContainer.innerHTML = state.pagesHTML;
+                    }
+                    
+                    if (state.theme) {
+                        setTheme(state.theme);
+                    }
+                } catch (err) {
+                    console.log('Failed to load state:', err);
+                }
+            }
+            
+            applyDocSettings();
+            
+            setTimeout(() => {
+                Prism.highlightAll();
+                setupCodeBlockHandlers();
+                setupImageControls();
+            }, 100);
+        }
+
+        function applyDocSettings() {
+            document.querySelectorAll('.page-canvas').forEach((page, i) => {
+                const watermark = page.querySelector('.watermark');
+                if (watermark) watermark.textContent = ui.docWatermark.value;
+                
+                const title = page.querySelector('.display-title');
+                if (title) title.textContent = ui.docTitle.value;
+                
+                const author = page.querySelector('.display-author');
+                if (author) author.textContent = `Created by ${ui.docAuthor.value}`;
+                
+                const pageNum = page.querySelector('.page-number-display');
+                if (pageNum) {
+                    pageNum.textContent = (i + 1).toString().padStart(2, '0');
+                    const container = pageNum.parentElement;
+                    if (container) container.style.display = ui.pageNumbersToggle.checked ? 'block' : 'none';
+                }
+            });
+        }
+
+        // ============================================
+        // IMAGE HANDLING
+        // ============================================
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                showToast('Please select an image!', 'error');
+                return;
+            }
+            
+            if (file.size > 10 * 1024 * 1024) {
+                showToast('Image too large! Max 10MB.', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                insertImageBlock(ev.target.result);
+            };
+            reader.readAsDataURL(file);
+            e.target.value = '';
+        }
+
+        function insertImageBlock(base64) {
+            const lastPage = document.querySelector('.page-canvas:last-child');
+            let contentArea = lastPage?.querySelector('.content-area');
+            
+            if (!contentArea) {
+                addNewPage();
+                contentArea = document.querySelector('.page-canvas:last-child .content-area');
+            }
+            
+            const caption = prompt('Image caption (optional):', '') || '';
+            const imgId = 'img-' + Date.now();
+            
+            const imageHTML = `
+                <div class="content-block">
+                    <button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button>
+                    <div class="image-block align-center" id="block-${imgId}">
+                        <img id="${imgId}" src="${base64}" alt="${caption}" style="width: 100%; max-width: 100%;">
+                        <div class="image-caption" contenteditable="true">${caption || 'Add caption...'}</div>
+                        <div class="image-controls no-pdf">
+                            <button class="image-control-btn" onclick="resizeImage('${imgId}', 25)">25%</button>
+                            <button class="image-control-btn" onclick="resizeImage('${imgId}', 50)">50%</button>
+                            <button class="image-control-btn" onclick="resizeImage('${imgId}', 75)">75%</button>
+                            <button class="image-control-btn active" onclick="resizeImage('${imgId}', 100)">100%</button>
+                            <button class="image-control-btn" onclick="alignImage('${imgId}', 'left')"><i class="fas fa-align-left"></i></button>
+                            <button class="image-control-btn active" onclick="alignImage('${imgId}', 'center')"><i class="fas fa-align-center"></i></button>
+                            <button class="image-control-btn" onclick="alignImage('${imgId}', 'right')"><i class="fas fa-align-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            contentArea.insertAdjacentHTML('beforeend', imageHTML);
+            saveState();
+            showToast('Image added!', 'success');
+        }
+
+        function resizeImage(imgId, percent) {
+            const img = $(imgId);
+            if (!img) return;
+            
+            img.style.width = percent + '%';
+            img.style.maxWidth = percent + '%';
+            
+            const controls = img.closest('.image-block')?.querySelector('.image-controls');
+            if (controls) {
+                controls.querySelectorAll('.image-control-btn').forEach(btn => {
+                    if (btn.textContent.trim() === percent + '%') btn.classList.add('active');
+                    else if (btn.textContent.includes('%')) btn.classList.remove('active');
+                });
+            }
+            saveState();
+        }
+
+        function alignImage(imgId, alignment) {
+            const img = $(imgId);
+            if (!img) return;
+            
+            const imageBlock = img.closest('.image-block');
+            if (!imageBlock) return;
+            
+            imageBlock.classList.remove('align-left', 'align-center', 'align-right');
+            imageBlock.classList.add('align-' + alignment);
+            
+            const controls = imageBlock.querySelector('.image-controls');
+            if (controls) {
+                controls.querySelectorAll('.image-control-btn').forEach(btn => {
+                    const icon = btn.querySelector('i');
+                    if (icon) {
+                        if (icon.classList.contains('fa-align-' + alignment)) btn.classList.add('active');
+                        else if (icon.classList.contains('fa-align-left') || icon.classList.contains('fa-align-center') || icon.classList.contains('fa-align-right')) btn.classList.remove('active');
+                    }
+                });
+            }
+            saveState();
+        }
+
+        function setupImageControls() {
+            document.querySelectorAll('.image-block').forEach(block => {
+                const img = block.querySelector('img');
+                if (!img || !img.id) return;
+                
+                const imgId = img.id;
+                const controls = block.querySelector('.image-controls');
+                if (!controls) return;
+                
+                controls.querySelectorAll('.image-control-btn').forEach(btn => {
+                    const text = btn.textContent.trim();
+                    const icon = btn.querySelector('i');
+                    
+                    if (text.includes('%')) {
+                        btn.onclick = () => resizeImage(imgId, parseInt(text));
+                    } else if (icon) {
+                        if (icon.classList.contains('fa-align-left')) btn.onclick = () => alignImage(imgId, 'left');
+                        else if (icon.classList.contains('fa-align-center')) btn.onclick = () => alignImage(imgId, 'center');
+                        else if (icon.classList.contains('fa-align-right')) btn.onclick = () => alignImage(imgId, 'right');
+                    }
+                });
+            });
+        }
+
+        // ============================================
+        // ADD CONTENT BLOCKS
+        // ============================================
+        function addBlock(type) {
+            if (type === 'image') {
+                ui.imageUpload.click();
+                return;
+            }
+            
+            const lastPage = document.querySelector('.page-canvas:last-child');
+            let contentArea = lastPage?.querySelector('.content-area');
+            
+            if (!contentArea) {
+                addNewPage();
+                contentArea = document.querySelector('.page-canvas:last-child .content-area');
+            }
+            
+            let blockHTML = '';
+            
+            switch (type) {
+                case 'text':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div contenteditable="true" class="prose max-w-none"><p>Your text here...</p></div></div>`;
+                    break;
+                case 'bullet':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div contenteditable="true" class="prose max-w-none"><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul></div></div>`;
+                    break;
+                case 'number':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div contenteditable="true" class="prose max-w-none"><ol><li>Step 1</li><li>Step 2</li><li>Step 3</li></ol></div></div>`;
+                    break;
+                case 'code':
+                    const lang = prompt('Language (js, python, html, css, bash):', 'javascript') || 'javascript';
+                    const codeId = `code-${Date.now()}`;
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div class="code-wrap" contenteditable="false"><span class="code-lang-tag">${lang.toUpperCase()}</span><button class="copy-code-btn no-pdf" onclick="copyCode('${codeId}')"><i class="fas fa-copy"></i> Copy</button><pre class="language-${lang}"><code id="${codeId}" contenteditable="true" spellcheck="false" class="language-${lang}">// Your ${lang} code here
+function example() {
+    console.log("Hello!");
+}</code></pre></div></div>`;
+                    break;
+                case 'hint':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div class="hint-box" contenteditable="true"><strong>💡 Hint:</strong> Your hint here...</div></div>`;
+                    break;
+                case 'solution':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div class="solution-box" contenteditable="true"><strong>✅ Solution:</strong> Your solution here...</div></div>`;
+                    break;
+                case 'info':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div class="info-box" contenteditable="true"><strong>ℹ️ Info:</strong> Important information here...</div></div>`;
+                    break;
+                case 'warning':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><div class="warning-box" contenteditable="true"><strong>⚠️ Warning:</strong> Warning message here...</div></div>`;
+                    break;
+                case 'divider':
+                    blockHTML = `<div class="content-block"><button class="block-delete-btn no-pdf" onclick="deleteBlock(this)"><i class="fas fa-times"></i></button><hr style="border: none; border-top: 2px dashed var(--accent-purple); margin: 1.5rem 0; opacity: 0.5;"></div>`;
+                    break;
+            }
+            
+            contentArea.insertAdjacentHTML('beforeend', blockHTML);
+            
+            setTimeout(() => {
+                Prism.highlightAll();
+                setupCodeBlockHandlers();
+            }, 50);
+            
+            saveState();
+            showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} added!`, 'success');
+        }
+
+        function copyCode(id) {
+            const code = $(id);
+            if (code) {
+                navigator.clipboard.writeText(code.textContent)
+                    .then(() => showToast('Copied!', 'success'))
+                    .catch(() => showToast('Copy failed!', 'error'));
+            }
+        }
+
+        // ============================================
+        // CODE BLOCK HANDLERS
+        // ============================================
+        function setupCodeBlockHandlers() {
+            document.querySelectorAll('code[contenteditable="true"]').forEach(code => {
+                code.onkeydown = function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const sel = window.getSelection();
+                        const range = sel.getRangeAt(0);
+                        const textNode = document.createTextNode('\n');
+                        range.deleteContents();
+                        range.insertNode(textNode);
+                        range.setStartAfter(textNode);
+                        sel.removeAllRanges();
+                        sel.addRange(range);
+                    }
+                    if (e.key === 'Tab') {
+                        e.preventDefault();
+                        document.execCommand('insertText', false, '    ');
+                    }
+                };
+                
+                code.onblur = function() {
+                    Prism.highlightElement(code);
+                };
+            });
+        }
+
+        // ============================================
+        // STATS UPDATE
+        // ============================================
+        function updateStats() {
+            let words = 0, lines = 0;
+            
+            document.querySelectorAll('.prose').forEach(el => {
+                const text = el.innerText.trim();
+                if (text) words += text.split(/\s+/).filter(w => w).length;
+            });
+            
+            document.querySelectorAll('pre code').forEach(el => {
+                lines += el.textContent.split('\n').filter(l => l.trim()).length;
+            });
+            
+            ui.statsPanel.textContent = `${words} Words | ${lines} LoC`;
+        }
+
+        // ============================================
+        // ZOOM CONTROL
+        // ============================================
+        function adjustZoom(delta) {
+            currentZoom = Math.min(Math.max(0.3, currentZoom + delta), 1.5);
+            ui.canvasWrapper.style.transform = `scale(${currentZoom})`;
+            ui.zoomVal.textContent = `${Math.round(currentZoom * 100)}%`;
+        }
+
+        // ============================================
+        // PWA INSTALL
+        // ============================================
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt fired');
+            e.preventDefault();
+            deferredPrompt = e;
+            if (ui.installBtn) {
+                ui.installBtn.style.display = 'flex';
+                ui.installBtn.classList.add('pulse-animation');
+            }
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((result) => {
+                    console.log('User choice:', result.outcome);
+                    if (result.outcome === 'accepted') {
+                        showToast('🎉 App installed successfully!', 'success');
+                    } else {
+                        showToast('Installation cancelled', 'info');
+                    }
+                    deferredPrompt = null;
+                    if (ui.installBtn) ui.installBtn.style.display = 'none';
+                });
+            } else {
+                // Fallback for browsers that don't support beforeinstallprompt
+                showToast('To install: Click browser menu → "Add to Home Screen" or "Install App"', 'info');
+            }
+        }
+
+        // ============================================
+        // PDF EXPORT - 3x SCALE
+        // ============================================
+        async function renderPDF() {
+            const loader = $('loader');
+            loader.style.display = 'flex';
+            document.body.classList.add('rendering');
+            
+            const wrapper = ui.canvasWrapper;
+            const originalTransform = wrapper.style.transform;
+            wrapper.style.transform = 'scale(1)';
+            
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pages = document.querySelectorAll('.page-canvas');
+
+            try {
+                for (let i = 0; i < pages.length; i++) {
+                    const canvas = await html2canvas(pages[i], {
+                        scale: 3,
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: null,
+                        allowTaint: true,
+                        onclone: (clonedDoc) => {
+                            clonedDoc.querySelectorAll('[data-highlight="true"]').forEach(el => {
+                                const color = el.getAttribute('data-color') || '#fef08a';
+                                el.style.cssText = `background-color: ${color} !important; color: #000 !important; padding: 1px 4px; border-radius: 3px; display: inline; -webkit-print-color-adjust: exact; print-color-adjust: exact;`;
+                            });
+                            clonedDoc.querySelectorAll('pre, code').forEach(el => el.style.whiteSpace = 'pre');
+                            clonedDoc.querySelectorAll('.no-pdf, .block-delete-btn, .delete-page-btn, .image-controls').forEach(el => el.style.display = 'none');
+                        }
+                    });
+                    
+                    if (i > 0) pdf.addPage();
+                    pdf.addImage(canvas.toDataURL('image/png', 1.0), 'PNG', 0, 0, 210, 297);
+                }
+                
+                pdf.save(`${ui.docTitle.value || 'Document'}.pdf`);
+                showToast('PDF exported!', 'success');
+                
+            } catch (err) {
+                console.error('PDF Export Error:', err);
+                showToast('Export failed!', 'error');
+            } finally {
+                wrapper.style.transform = originalTransform;
+                loader.style.display = 'none';
+                document.body.classList.remove('rendering');
+            }
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadState();
+            
+            ui.docTitle.addEventListener('input', () => { applyDocSettings(); autoSave(); });
+            ui.docAuthor.addEventListener('input', () => { applyDocSettings(); autoSave(); });
+            ui.docWatermark.addEventListener('input', () => { applyDocSettings(); autoSave(); });
+            ui.pageNumbersToggle.addEventListener('change', () => { applyDocSettings(); saveState(); });
+            ui.pagesContainer.addEventListener('input', autoSave);
+            
+            setupCodeBlockHandlers();
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key.toLowerCase()) {
+                        case 's': e.preventDefault(); saveState(); showToast('Saved!', 'success'); break;
+                        case 'b': e.preventDefault(); formatText('bold'); break;
+                        case 'i': e.preventDefault(); formatText('italic'); break;
+                        case 'u': e.preventDefault(); formatText('underline'); break;
+                        case 'z': if (!e.shiftKey) { /* browser handles */ } break;
+                        case 'y': /* browser handles */ break;
+                    }
+                }
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+                }
+            });
+
+            const observer = new MutationObserver(() => {
+                setTimeout(() => { setupCodeBlockHandlers(); setupImageControls(); }, 100);
+            });
+            observer.observe(ui.pagesContainer, { childList: true, subtree: true });
+
+            updateStats();
+            console.log('SudhirDevOps1 PDF Generator Pro v2.0 loaded!');
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js', { scope: './' })
+                .then((registration) => {
+                    console.log('SW registered:', registration.scope);
+                })
+                .catch((error) => {
+                    console.log('SW registration failed:', error);
+                });
+        }
+
+        // Check if app is installed
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA installed!');
+            showToast('App installed successfully!', 'success');
+            if (ui.installBtn) ui.installBtn.style.display = 'none';
+            deferredPrompt = null;
+        });
+
+        // For iOS - show install instructions
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
+
+        function isInStandaloneMode() {
+            return window.matchMedia('(display-mode: standalone)').matches || 
+                   window.navigator.standalone === true;
+        }
+
+        // Show iOS install hint
+        if (isIOS() && !isInStandaloneMode()) {
+            setTimeout(() => {
+                showToast('Tip: Add to Home Screen for app experience!', 'info');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
